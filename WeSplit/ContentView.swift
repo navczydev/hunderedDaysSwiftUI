@@ -10,18 +10,25 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Form{
-            Section{
-                Text("Hello, World!")
-                Text("Hello, World!")
-            }
-            Section{
-                Text("Hello, World!")
-                Text("Hello, World!")
-            }
+        NavigationView{
+            Form{
+                Section{
+                    Text("Hello, World!")
+                    Text("Hello, World!")
+                }
+                Section{
+                    Text("Hello, World!")
+                    Text("Hello, World!")
+                }
 
+            }
+             //displayMode requires with Text but not with raw string
+//            .navigationBarTitle(Text("SwiftUI"),displayMode: .inline)
+            .navigationBarTitle("SwiftUI")
         }
+        
     }
+        
 }
 
 struct ContentView_Previews: PreviewProvider {
