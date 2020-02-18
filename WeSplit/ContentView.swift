@@ -10,55 +10,47 @@ import SwiftUI
 
 struct ContentView: View {
     //for state mgt.
-    @State private var tabCount = 0
-    @State private var name = ""
-    let students = ["Harry","Nav","Gagan"]
-    @State var selectedStudent =  "Harry"
-    var body: some View {
-        Text("Hello world!!")
-        //NavigationView{
-            //program state
-//            Button("TabCount is \(tabCount)"){
-//                self.tabCount += 1
-//            }
-//            Form{
-//                Section{
-//                    Text("Hello, World!")
-//                    Text("Hello, World!")
-//                }
-//                Section{
-//                    Text("Hello, World!")
-//                    Text("Hello, World!")
-//                }
-//
-//            }
-             //displayMode requires with Text but not with raw string
-//            .navigationBarTitle(Text("SwiftUI"),displayMode: .inline)
-            //.navigationBarTitle("SwiftUI")
-       // }
-        
-        /**
-                $ makes 2 way binding
-         */
-//        Form{
-//            TextField("Enter your name",text: $name)
-//            Text("Name is \(name)")
-//        }
-        
-        //for loop to create view
-      //  Form{
-//            ForEach(0 ..< 100){
-//                Text("Row \($0)")
-//            }
-//            Picker("Select your student",selection: $selectedStudent){
-//                ForEach(0 ..< students.count){
-//                    Text(self.students[$0])
-//                }
-//            }
-        //}
-        
+    @State private var checkOutAmount = ""
+    @State private var numberOfPeople = 1
+    @State var tipPercentage =  1
+    let tipPercentages = [10,20,25,30,0]
+    var totalPerPerson: Double{
+        let peopleCount = Double(numberOfPeople + 2)
+        let tipSelection = Double(tipPercentages[tipPercentage])
+        let orderAmount = Double(checkOutAmount) ??  0
+        let tipValue = orderAmount / 100 * tipSelection
+        let grandTotal = tipValue + orderAmount
+        let perPerson = grandTotal / peopleCount
+        return perPerson
     }
-        
+    var body: some View {
+        NavigationView{
+            Form{
+                //amount section with 2 way binding
+                Section{
+                    TextField("Amount: ",text: $checkOutAmount)
+                        .keyboardType(.decimalPad)
+                    Picker("Number of people:",selection: $numberOfPeople){
+                        ForEach(2 ..< 9) {
+                            Text("\($0) people")
+                        }
+                    }
+                }
+                Section(header: Text("How much tip do you want to pay:")){
+                    Picker("Tip percentage:",selection: $tipPercentage){
+                        ForEach(0 ..< tipPercentages.count){
+                            Text("\(self.tipPercentages[$0])%")
+                        }
+                    }
+                        .pickerStyle(SegmentedPickerStyle())
+                }
+                Section{
+                    Text("$\(totalPerPerson,specifier: "%.2f")")
+                }
+            }
+            .navigationBarTitle("We Split")
+        }
+   }
 }
 
 struct ContentView_Previews: PreviewProvider {
